@@ -7,13 +7,14 @@ provider:
   name: aws
   runtime: nodejs14.x
   lambdaHashingVersion: 20201221
+  stage: ${opt:stage, 'test'}
 
 functions:
   preTokenGeneration:
     handler: src/handler.preTokenGeneration
     events:
       - cognitoUserPool:
-          pool: MyUserPool # TODO: read from config
+          pool: datarock-users-${self:provider.stage}
           trigger: PreTokenGeneration
           existing: true
 plugins:

@@ -1,0 +1,134 @@
+version: 2.1
+
+jobs:
+  run-tests:
+    docker:
+      - image: circleci/node:14
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - run-tests-v2.1-dependencies-{{ checksum "package-lock.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - run-tests-v2.1-dependencies-
+      - run:
+          name: Install deps
+          command: |
+            npm i
+      - run:
+          name: Lint
+          command: |
+            npm run lint
+      - run:
+          name: Test
+          command: |
+            npm test
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: run-tests-v2.1-dependencies-{{ checksum "package-lock.json" }}
+  deploy-test:
+    docker:
+      - image: circleci/node:14
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - deploy-test-v2.1-dependencies-{{ checksum "package-lock.json" }}
+            - deploy-test-v2.1-dependencies-
+      - run:
+          name: Deploy app
+          command: |
+            ./node_modules/.bin/serverless deploy --stage test
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: deploy-test-v2.1-dependencies-{{ checksum "package-lock.json" }}
+  deploy-demo:
+    docker:
+      - image: circleci/node:14
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - deploy-demo-v2.1-dependencies-{{ checksum "package-lock.json" }}
+            - deploy-demo-v2.1-dependencies-
+      - run:
+          name: Deploy app
+          command: |
+            ./node_modules/.bin/serverless deploy --stage demo
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: deploy-demo-v2.1-dependencies-{{ checksum "package-lock.json" }}
+  deploy-prod:
+    docker:
+      - image: circleci/node:14
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - deploy-prod-v2.1-dependencies-{{ checksum "package-lock.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - deploy-prod-v2.1-dependencies-
+      - run:
+          name: Deploy app
+          command: |
+            ./node_modules/.bin/serverless deploy --stage prod
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: deploy-prod-v2.1-dependencies-{{ checksum "package-lock.json" }}
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - run-tests
+      - deploy-test-approval:
+          type: approval
+          requires:
+            - run-tests
+          filters:
+            branches:
+              ignore: master
+      - deploy-test:
+          name: deploy-test-for-master
+          requires:
+            - run-tests
+          filters:
+            branches:
+              only: master
+      - deploy-test:
+          name: deploy-test-for-non-master
+          requires:
+            - run-tests
+            - deploy-test-approval
+          filters:
+            branches:
+              ignore: master
+      - deploy-demo-approval:
+          type: approval
+          requires:
+            - deploy-test-for-master
+          filters:
+            branches:
+              only: master
+      - deploy-demo:
+          requires:
+            - deploy-demo-approval
+          filters:
+            branches:
+              only: master
+      - deploy-prod-approval:
+          type: approval
+          requires:
+            - deploy-demo
+          filters:
+            branches:
+              only: master
+      - deploy-prod:
+          requires:
+            - deploy-prod-approval
+          filters:
+            branches:
+              only: master
