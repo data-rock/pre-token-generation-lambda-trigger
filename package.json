@@ -6,7 +6,8 @@
   "scripts": {
     "test": "serverless-bundle test",
     "lint": "eslint src/ --ext .js",
-    "lint-fix": "eslint src/ --ext .js --fix"
+    "lint-fix": "eslint src/ --ext .js --fix",
+    "deploy": "serverless deploy"
   },
   "author": "",
   "license": "ISC",

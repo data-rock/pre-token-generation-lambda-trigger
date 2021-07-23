@@ -39,7 +39,7 @@ jobs:
       - run:
           name: Deploy app
           command: |
-            ./node_modules/.bin/serverless deploy --stage test
+            npm run deploy -- --stage test
       - save_cache:
           paths:
             - ./node_modules
@@ -56,7 +56,7 @@ jobs:
       - run:
           name: Deploy app
           command: |
-            ./node_modules/.bin/serverless deploy --stage demo
+            npm run deploy -- --stage demo
       - save_cache:
           paths:
             - ./node_modules
@@ -74,7 +74,7 @@ jobs:
       - run:
           name: Deploy app
           command: |
-            ./node_modules/.bin/serverless deploy --stage prod
+            npm run deploy -- --stage prod
       - save_cache:
           paths:
             - ./node_modules
