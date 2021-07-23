@@ -10,9 +10,12 @@ provider:
 
 functions:
   preTokenGeneration:
-    handler: handler.preTokenGeneration
+    handler: src/handler.preTokenGeneration
     events:
       - cognitoUserPool:
           pool: MyUserPool # TODO: read from config
           trigger: PreTokenGeneration
           existing: true
+plugins:
+  - serverless-bundle
+

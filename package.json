@@ -1,0 +1,19 @@
+{
+  "name": "pre-token-generation-lambda-trigger",
+  "version": "1.0.0",
+  "description": "Adds additional claims to the cognito JWT token",
+  "main": "src/handler.js",
+  "scripts": {
+    "test": "serverless-bundle test"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jest": "^24.4.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "2.3.2",
+    "serverless-bundle": "^4.4.0"
+  }
+}
