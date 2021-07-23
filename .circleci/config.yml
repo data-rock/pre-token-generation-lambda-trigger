@@ -14,7 +14,7 @@ jobs:
       - run:
           name: Install deps
           command: |
-            npm i
+            npm install
       - run:
           name: Lint
           command: |
@@ -37,6 +37,10 @@ jobs:
             - deploy-test-v2.1-dependencies-{{ checksum "package-lock.json" }}
             - deploy-test-v2.1-dependencies-
       - run:
+          name: Install deps
+          command: |
+            npm install
+      - run:
           name: Deploy app
           command: |
             npm run deploy -- --stage test
@@ -53,6 +57,10 @@ jobs:
           keys:
             - deploy-demo-v2.1-dependencies-{{ checksum "package-lock.json" }}
             - deploy-demo-v2.1-dependencies-
+      - run:
+          name: Install deps
+          command: |
+            npm install
       - run:
           name: Deploy app
           command: |
@@ -71,6 +79,10 @@ jobs:
             - deploy-prod-v2.1-dependencies-{{ checksum "package-lock.json" }}
             # fallback to using the latest cache if no exact match is found
             - deploy-prod-v2.1-dependencies-
+      - run:
+          name: Install deps
+          command: |
+            npm install
       - run:
           name: Deploy app
           command: |
