@@ -1,4 +1,4 @@
-service: pre-token-generation-lambda-trigger
+service: pre-token-lambda
 
 frameworkVersion: '2'
 
