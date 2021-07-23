@@ -1,15 +1,16 @@
 'use strict';
 
-module.exports.hello = async (event) => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify(
-      {
-        message: 'Go Serverless v2.0! Your function executed successfully!',
-        input: event,
-      },
-      null,
-      2
-    ),
+module.exports.preTokenGeneration = (event, context, callback) => {
+  event.response = {
+      "claimsOverrideDetails": {
+          "claimsToAddOrOverride": {
+              "attribute_key2": "attribute_value2",
+              "attribute_key": "attribute_value"
+          },
+          "claimsToSuppress": ["email"]
+      }
   };
+
+  // Return to Amazon Cognito
+  callback(null, event);
 };

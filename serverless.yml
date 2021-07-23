@@ -9,5 +9,10 @@ provider:
   lambdaHashingVersion: 20201221
 
 functions:
-  hello:
-    handler: handler.hello
+  preTokenGeneration:
+    handler: handler.preTokenGeneration
+    events:
+      - cognitoUserPool:
+          pool: MyUserPool # TODO: read from config
+          trigger: PreTokenGeneration
+          existing: true
