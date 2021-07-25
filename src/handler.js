@@ -1,4 +1,4 @@
-module.exports.preTokenGeneration = (event, context, callback) => {
+export const preTokenGeneration = (event, context, callback) => {
   event.response = {
     claimsOverrideDetails: {
       claimsToAddOrOverride: {
