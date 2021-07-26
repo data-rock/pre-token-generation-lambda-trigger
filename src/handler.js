@@ -1,3 +1,4 @@
+import { getUser } from './cognito';
 import { getCompany } from './imageMetadataApi';
 
 const isMfaRequired = async (isAdmin, companyId) => {
@@ -18,6 +19,9 @@ export const preTokenGeneration = async (event, context, callback) => {
 
   const mfaRequired = await isMfaRequired(isAdmin, companyId);
   console.log('mfaRequired :', mfaRequired);
+
+  const user = await getUser(event.userName);
+  console.log('user :', user);
 
   event.response = {
     claimsOverrideDetails: {
