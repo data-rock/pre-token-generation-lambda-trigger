@@ -32,12 +32,6 @@ jobs:
       - image: circleci/node:14
     steps:
       - checkout
-      - run:
-          name: Setup test Environment Variables
-          command: |
-            echo export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID_TEST_ENV >> $BASH_ENV
-            echo export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY_TEST_ENV >> $BASH_ENV
-            echo export AWS_DEFAULT_REGION="ap-southeast-2" >> $BASH_ENV
       - restore_cache:
           keys:
             - deploy-test-v2.1-dependencies-{{ checksum "package-lock.json" }}
@@ -59,12 +53,6 @@ jobs:
       - image: circleci/node:14
     steps:
       - checkout
-      - run:
-          name: Setup demo Environment Variables
-          command: |
-            echo export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID_DEMO_ENV >> $BASH_ENV
-            echo export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY_DEMO_ENV >> $BASH_ENV
-            echo export AWS_DEFAULT_REGION="ap-southeast-2" >> $BASH_ENV
       - restore_cache:
           keys:
             - deploy-demo-v2.1-dependencies-{{ checksum "package-lock.json" }}
@@ -86,12 +74,6 @@ jobs:
       - image: circleci/node:14
     steps:
       - checkout
-      - run:
-          name: Setup prod Environment Variables
-          command: |
-            echo export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID_PROD_ENV >> $BASH_ENV
-            echo export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY_PROD_ENV >> $BASH_ENV
-            echo export AWS_DEFAULT_REGION="ap-southeast-2" >> $BASH_ENV
       - restore_cache:
           keys:
             - deploy-prod-v2.1-dependencies-{{ checksum "package-lock.json" }}
@@ -123,6 +105,7 @@ workflows:
               ignore: master
       - deploy-test:
           name: deploy-test-for-master
+          context: Circle CI access to AWS test account
           requires:
             - run-tests
           filters:
@@ -130,6 +113,7 @@ workflows:
               only: master
       - deploy-test:
           name: deploy-test-for-non-master
+          context: Circle CI access to AWS test account
           requires:
             - run-tests
             - deploy-test-approval
@@ -144,6 +128,7 @@ workflows:
             branches:
               only: master
       - deploy-demo:
+          context: Circle CI access to AWS demo account
           requires:
             - deploy-demo-approval
           filters:
@@ -157,6 +142,7 @@ workflows:
             branches:
               only: master
       - deploy-prod:
+          context: Circle CI access to AWS prod account
           requires:
             - deploy-prod-approval
           filters:
