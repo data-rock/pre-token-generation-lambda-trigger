@@ -1,4 +1,4 @@
-service: pre-token-generation-lambda-trigger
+service: pre-token-lambda
 
 frameworkVersion: '2'
 
@@ -6,8 +6,20 @@ frameworkVersion: '2'
 provider:
   name: aws
   runtime: nodejs14.x
+  region: ap-southeast-2
   lambdaHashingVersion: 20201221
+  stage: ${opt:stage, 'test'}
+  stackTags:
+    project: datarock-platform
 
 functions:
-  hello:
-    handler: handler.hello
+  preTokenGeneration:
+    handler: src/handler.preTokenGeneration
+    events:
+      - cognitoUserPool:
+          pool: datarock-users-${self:provider.stage}
+          trigger: PreTokenGeneration
+          existing: true
+plugins:
+  - serverless-bundle
+
