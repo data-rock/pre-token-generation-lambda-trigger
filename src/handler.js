@@ -1,12 +1,13 @@
 import { getCompany } from './imageMetadataApi';
 
 export const preTokenGeneration = async (event, context, callback) => {
-  const isAdmin = event.request.userAttributes['custom:isAdmin'];
+  console.log('event :', event);
+  const isAdmin = !!event.request.userAttributes['custom:isAdmin'];
   console.log('isAdmin :', isAdmin);
   const companyId = event.request.userAttributes['custom:companyId'];
-  console.log(' :');
+  console.log('companyId :', companyId);
 
-  const mfaRequired = isAdmin || getCompany(companyId).mfaRequired;
+  const mfaRequired = isAdmin || companyId ? (await getCompany(companyId)).mfaRequired : false;
   console.log('mfaRequired :', mfaRequired);
 
   event.response = {
