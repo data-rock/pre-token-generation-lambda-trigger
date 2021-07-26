@@ -20,6 +20,9 @@ functions:
           pool: datarock-users-${self:provider.stage}
           trigger: PreTokenGeneration
           existing: true
+    environment:
+      METADATA_API_URL: https://image-metadata-api-serverless.${self:provider.stage}.datarock.com.au
+      METADATA_API_KEY: ${ssm:/apig/platform-infrastructure/${self:provider.stage}/api-key~true}
 plugins:
   - serverless-bundle
 
