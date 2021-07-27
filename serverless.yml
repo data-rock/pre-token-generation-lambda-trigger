@@ -18,7 +18,7 @@ provider:
         - Effect: 'Allow'
           Action:
             - 'cognito-idp:AdminGetUser'
-          Resource: 'arn:aws:cognito-idp:#{AWS::Region}:#{AWS::AccountId}:userpool/ap-southeast-*'
+          Resource: 'arn:aws:cognito-idp:#{AWS::Region}:#{AWS::AccountId}:userpool/*'
 
 functions:
   preTokenGeneration:
@@ -30,7 +30,7 @@ functions:
           existing: true
     environment:
       METADATA_API_URL: https://image-metadata-api-serverless.${self:provider.stage}.datarock.com.au
-      METADATA_API_KEY: ${ssm:/apig/platform-infrastructure/${self:provider.stage}/api-key~true}
+      METADATA_API_KEY: ${ssm:/apig/platform-infrastructure/${self:provider.stage}/api-key}
       COGNITO_USER_POOL_ID: ${cf:datarock-infrastructure-${self:provider.stage}.UserPool}
     timeout: 10
 plugins:
