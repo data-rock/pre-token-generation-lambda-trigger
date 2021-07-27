@@ -12,6 +12,13 @@ provider:
   logRetentionInDays: 14
   stackTags:
     project: datarock-platform
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - 'cognito-idp:AdminGetUser'
+          Resource: 'arn:aws:cognito-idp:#{AWS::Region}:#{AWS::AccountId}:userpool/ap-southeast-*'
 
 functions:
   preTokenGeneration:
