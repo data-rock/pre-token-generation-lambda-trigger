@@ -6,9 +6,9 @@ const requireEnvVariable = (variableName) => {
   return value;
 };
 
-export default {
+export default () => ({
   metadataApi: {
     companyUrl: `${requireEnvVariable('METADATA_API_URL')}/company`,
     key: requireEnvVariable('METADATA_API_KEY'),
   },
-};
+});
