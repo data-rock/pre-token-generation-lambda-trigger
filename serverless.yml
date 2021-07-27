@@ -18,7 +18,7 @@ provider:
         - Effect: 'Allow'
           Action:
             - 'cognito-idp:AdminGetUser'
-          Resource: { "Fn::Sub": "arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/*" }
+          Resource: { "Fn::Sub": "arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/${cf:datarock-infrastructure-${self:provider.stage}.UserPool}" }
 
 functions:
   preTokenGeneration:
