@@ -20,13 +20,18 @@ export const preTokenGeneration = async (event, context, callback) => {
   const mfaRequired = await isMfaRequired(isAdmin, companyId);
   console.log('mfaRequired :', mfaRequired);
 
-  const user = await getUser(event.userName);
-  console.log('user :', user);
+  let mfaEnabled = false;
+  if (mfaRequired) {
+    const user = await getUser(event.userName);
+    console.log('user :', user);
+    mfaEnabled = user.PreferredMfaSetting === 'SOFTWARE_TOKEN_MFA';
+  }
 
   event.response = {
     claimsOverrideDetails: {
       claimsToAddOrOverride: {
         mfaRequired,
+        mfaEnabled,
       },
     },
   };
