@@ -30,7 +30,7 @@ functions:
           existing: true
     environment:
       METADATA_API_URL: https://image-metadata-api-serverless.${self:provider.stage}.datarock.com.au
-      METADATA_API_KEY: ${ssm:/apig/platform-infrastructure/${self:provider.stage}/api-key}
+      METADATA_API_KEY: ${ssm:/apig/platform-infrastructure/${self:provider.stage}/api-key~true}
       COGNITO_USER_POOL_ID: ${cf:datarock-infrastructure-${self:provider.stage}.UserPool}
     timeout: 10
 plugins:
