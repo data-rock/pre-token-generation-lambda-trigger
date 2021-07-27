@@ -23,5 +23,9 @@
     "prettier": "2.3.2",
     "serverless": "^2.52.1",
     "serverless-bundle": "^4.4.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.954.0",
+    "node-fetch": "^2.6.1"
   }
 }
